@@ -56,6 +56,7 @@ const options = () => {
     })
 };
 
+// ---------------------VIEW-----------------------------------------------
 const viewDepartments = () => {
     console.log('Viewing all departments.');
     const sql = `SELECT * FROM department`;
@@ -82,7 +83,7 @@ const viewRoles = () => {
  };
 const viewEmployees = () => {
     console.log('Viewing all employees');
-    const sql = `SELECT employees.*, `; //Still needs work - needs to put ee with manager name and role
+    const sql = `SELECT * FROM employee`; //Still needs work - needs to put ee with manager name and role
 
     db.query(sql, (err, results) => {
         if (err) throw err;
@@ -91,6 +92,7 @@ const viewEmployees = () => {
     });
 };
 
+// ------------ADD----------------------------------------------------------
 const addDepartment = () => {
     inquirer.prompt([
         {
@@ -112,13 +114,63 @@ const addDepartment = () => {
 
         db.query(sql, params, (err, results) => {
             if (err) throw err;
-            console.table(results);
             console.log('Department added!');
             options();
         })
     })
 };
 const addRole = () => {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'rTitle',
+            message: "What is the title for the new role?",
+            validate: rTitleInput => {
+                if (!rTitleInput) {
+                    console.log('Please enter a title.');
+                    return false;
+                }
+                return true;
+            }
+        },
+        {
+            type: 'input',
+            name: 'salaryInput',
+            message: "What is the new role's salary?",
+            validate: salaryInput => {
+                if (!salaryInput) {
+                    console.log('Please enter a salary amount.');
+                    return false;
+                }
+                return true;
+            }
+        },
+        {
+            type: 'input',
+            name: 'deptIdInput',
+            message: "What is the role's department Id?",
+            validate: deptIdInput => {
+                if(!deptIdInput) {
+                    console.log('Please enter a department Id.');
+                    return false;
+                }
+                return true;
+            }
+        }
+    ]).then((answers) => {
+        const sql = `INSERT INTO roles (title, salary, department_id)
+                        VALUES (?, ?, ?)`;
+        const params = [answers.rTitle, answers.salaryInput, answers.deptIdInput];
+
+        db.query(sql, params, (err, results) => {
+            if (err) throw err;
+            console.log('Role added!');
+            options();
+        })
+    })
+};
+const addEmployee = () => {
+
     inquirer.prompt([
         {
             type: 'input',
@@ -168,12 +220,20 @@ const addRole = () => {
                 return true;
             }
         }
-    ])
-};
-const addEmployee = () => {
+    ]).then((answers) => {
+        const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id)
+                        VALUES (?, ?, ?, ?)`;
+        const params = [answers.fName, answers.lName, answers.roleId, answers.manId];
 
+        db.query(sql, params, (err, results) => {
+            if (err) throw err;
+            console.log('Added employee!');
+            options();
+        })
+    })
 };
 
+// -------------UPDATE--------------------------------------------------------
 const updateRole = () => {
 
 };
