@@ -69,9 +69,7 @@ const viewDepartments = () => {
 };
 const viewRoles = () => {
     console.log('Viewing all roles');
-    const sql = `SELECT roles.*, department.id
-                AS department_id
-                FROM roles
+    const sql = `SELECT * FROM roles
                 LEFT JOIN department
                 ON roles.department_id = department.id`;
 
@@ -83,7 +81,11 @@ const viewRoles = () => {
  };
 const viewEmployees = () => {
     console.log('Viewing all employees');
-    const sql = `SELECT * FROM employee`; //Still needs work - needs to put ee with manager name and role
+    const sql = `SELECT * FROM employee
+                    LEFT JOIN roles
+                    ON employee.role_id = roles.id
+                    LEFT JOIN department
+                    ON roles.department_id = department.id`; //Still needs work - needs to put ee with manager name and role
 
     db.query(sql, (err, results) => {
         if (err) throw err;
