@@ -2,7 +2,7 @@
 
 A command line application to keep track of employees, job roles, and departments in a SQL database. 
 
-
+![Alt text](./Untitled_%20May%202%2C%202022%206_26%20PM.mp4)
 
 ## Table of Contents
 * [Installation](#installation)
