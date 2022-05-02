@@ -92,10 +92,83 @@ const viewEmployees = () => {
 };
 
 const addDepartment = () => {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'dept',
+            message: 'What is the name of the department you would like to add?',
+            validate: newDeptNameInput => {
+                if (!newDeptNameInput) {
+                    console.log('Please enter a department name.');
+                    return false;
+                } 
+                return true;
+            }
+        }
+    ]).then((answers) => {
+        const sql = `INSERT INTO department (name)
+                        VALUES (?)`;
+        const params = [answers.dept];
 
+        db.query(sql, params, (err, results) => {
+            if (err) throw err;
+            console.table(results);
+            console.log('Department added!');
+            options();
+        })
+    })
 };
 const addRole = () => {
-
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'fName',
+            message: "What is the new employee's first name?",
+            validate: fNameInput => {
+                if (!fNameInput) {
+                    console.log('Please enter a first name.');
+                    return false;
+                }
+                return true;
+            }
+        },
+        {
+            type: 'input',
+            name: 'lName',
+            message: "What is the new employee's last name?",
+            validate: lNameInput => {
+                if (!lNameInput) {
+                    console.log('Please enter a last name.');
+                    return false;
+                }
+                return true;
+            }
+        },
+        {
+            type: 'input',
+            name: 'roleId',
+            message: "What is the new employee's role Id number?",
+            validate: roleIdInput => {
+                if (!roleIdInput) {
+                    console.log('Please enter a role Id number.');
+                    return false;
+                }
+                return true;
+            }
+        },
+        {
+            type: 'input',
+            name: 'manId',
+            message: "What is the new employee's manager's Id?",
+            validate: manIdInput => {
+                if(!manIdInput) {
+                    console.log('Please enter a manager Id.');
+                    return false;
+                }
+                return true;
+            }
+        }
+    ])
 };
 const addEmployee = () => {
 
