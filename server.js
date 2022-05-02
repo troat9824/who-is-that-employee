@@ -25,5 +25,47 @@ const options = () => {
             ],
             message: 'What would you like to do?'
         }
-    ])
+    ]).then((answers) => {
+        switch (answers.intro) {
+            case 'VIEW ALL DEPARTMENTS':
+                viewDepartments();
+                break;
+        }
+    })
 }
+
+
+
+
+
+
+const viewDepartments = () => {
+    console.log('Viewing all departments.');
+    const sql = `SELECT * FROM department`;
+
+    db.query(sql, (err, results) => {
+        if (err) throw err;
+        console.table(results);
+        options();
+    });
+};
+const viewRoles = () => {
+    console.log('Viewing all roles');
+    const sql = `SELECT * FROM roles`;
+
+    db.query(sql, (err, results) => {
+        if (err) throw err;
+        console.table(results);
+        options();
+     });
+ };
+const viewEmployees = () => {
+    console.log('Viewing all employees');
+    const sql = `SELECT * FROM employee`;
+
+    db.query(sql, (err, results) => {
+        if (err) throw err;
+        console.table(results);
+        options();
+    });
+};
