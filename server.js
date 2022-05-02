@@ -235,7 +235,41 @@ const addEmployee = () => {
 
 // -------------UPDATE--------------------------------------------------------
 const updateRole = () => {
+    inquirer.prompt([
+        {
+            type: 'num',
+            name: 'updateId',
+            message: "What is the employee's Id that you would like to update?",
+            validate: updateIdInput => {
+                if (!updateIdInput) {
+                    console.log('Please enter an Id');
+                    return false;
+                }
+                return true;
+            }
+        },
+        {
+            type: 'num',
+            name: 'updateEeRole',
+            message: "What is the employee's new role Id?",
+            validate: updateEeRoleInput => {
+                if (!updateEeRoleInput) {
+                    console.log('Please enter a role Id.');
+                    return false;
+                }
+                return true;
+            }
+        }
+    ]).then((answers) => {
+        const sql = `UPDATE employee SET role_id = ? WHERE id = ?`;
+        const params = [answers.updateEeRole, answers.updateId];
 
+        db.query(sql, params, (err, results) => {
+            if (err) throw err;
+            console.log('Employee role updated!');
+            options();
+        })
+    })
 };
 
 
