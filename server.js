@@ -21,7 +21,8 @@ const options = () => {
                 'ADD A DEPARTMENT',
                 'ADD A ROLE',
                 'ADD AN EMPLOYEE',
-                'UPDATE EMPLOYEE ROLE'
+                'UPDATE EMPLOYEE ROLE',
+                'QUIT'
             ],
             message: 'What would you like to do?'
         }
@@ -30,14 +31,30 @@ const options = () => {
             case 'VIEW ALL DEPARTMENTS':
                 viewDepartments();
                 break;
+            case 'VIEW ALL ROLES':
+                viewRoles();
+                break;
+            case 'VIEW ALL EMPLOYEES':
+                viewEmployees();
+                break;
+            case 'ADD A DEPARTMENT':
+                addDepartment();
+                break;
+            case 'ADD A ROLE':
+                addRole();
+                break;
+            case 'ADD AN EMPLOYEE':
+                addEmployee();
+                break;
+            case 'UPDATE EMPLOYEE ROLE':
+                updateRole();
+                break;
+            case 'QUIT':
+                quit();
+                break;
         }
     })
-}
-
-
-
-
-
+};
 
 const viewDepartments = () => {
     console.log('Viewing all departments.');
@@ -51,7 +68,11 @@ const viewDepartments = () => {
 };
 const viewRoles = () => {
     console.log('Viewing all roles');
-    const sql = `SELECT * FROM roles`;
+    const sql = `SELECT roles.*, department.id
+                AS department_id
+                FROM roles
+                LEFT JOIN department
+                ON roles.department_id = department.id`;
 
     db.query(sql, (err, results) => {
         if (err) throw err;
@@ -61,11 +82,33 @@ const viewRoles = () => {
  };
 const viewEmployees = () => {
     console.log('Viewing all employees');
-    const sql = `SELECT * FROM employee`;
+    const sql = `SELECT employees.*, `; //Still needs work - needs to put ee with manager name and role
 
     db.query(sql, (err, results) => {
         if (err) throw err;
         console.table(results);
         options();
     });
+};
+
+const addDepartment = () => {
+
+};
+const addRole = () => {
+
+};
+const addEmployee = () => {
+
+};
+
+const updateRole = () => {
+
+};
+
+
+
+const quit = () => {
+    console.log('Goodbye!');
+    db.end();
+    process.exit();
 };
